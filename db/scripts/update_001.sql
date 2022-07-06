@@ -1,21 +1,19 @@
-create table driver(
-    id serial primary key
-);
-
-create table engine(
-    id serial primary key
-);
-
-create table car(
+create table if not exists users(
     id serial primary key,
-    engine_id int not null unique references engine(id)
+    username varchar(255) UNIQUE NOT NULL,
+    name varchar(255),
+    password varchar(255)
 );
 
-create table history_owner(
-  id serial primary key,
-  driver_id int not null references driver(id),
-  car_id int not null references car(id)
-);
+create table if not exists ads(
+    id serial primary key,
+    description varchar(255),
+    model varchar(255),
+    car_body varchar(255),
+    photo bytea,
+    is_sold bool,
+    user_id int references users(id)
+)
 
 
 
