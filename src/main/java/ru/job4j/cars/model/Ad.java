@@ -1,6 +1,7 @@
 package ru.job4j.cars.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -14,6 +15,8 @@ public class Ad {
     @Column(name = "car_body")
     private String carBody;
     private byte[] photo;
+
+    private LocalDateTime created;
     @Column(name = "is_sold")
     private boolean isSold;
 
@@ -26,6 +29,7 @@ public class Ad {
         ad.description = description;
         ad.model = model;
         ad.carBody = carBody;
+        ad.created = LocalDateTime.now();
         ad.isSold = isSold;
         return ad;
     }
@@ -86,6 +90,14 @@ public class Ad {
         this.user = user;
     }
 
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -103,4 +115,10 @@ public class Ad {
         return Objects.hash(id, description);
     }
 
+    @Override
+    public String toString() {
+        return "Ad{id=" + id + ", description='" + description + '\'' + ", model='" + model + '\''
+                + ", carBody='" + carBody + '\'' + ", created=" + created + ", isSold=" + isSold
+                + ", user=" + user + '}';
+    }
 }
