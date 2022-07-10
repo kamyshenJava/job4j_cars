@@ -14,8 +14,27 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class AdRepository {
+
+    public List<Ad> getAdsWithin24Hours(Session session) {
+        Query query = session.createQuery("Select distinct a From Ad a where a.created >= :lastDay");
+        query.setParameter("lastDay", LocalDateTime.now().minusHours(24));
+        return query.list();
+    }
+
+    public List<Ad> getAdsWithPhotos(Session session) {
+        Criteria cr = session.createCriteria(Ad.class);
+        cr.add(Restrictions.isNotNull("photo"));
+        return cr.list();
+    }
+
+    public List<Ad> getAdsWithSpecificCarBody(Session session, String carBody) {
+        Query query = session.createQuery("Select distinct a from Ad a where a.carBody = :carBody");
+        query.setParameter("carBody", carBody);
+        return query.list();
+    }
+
     public static void main(String[] args) {
-        List<Ad> rsl;
+        AdRepository adRepository = new AdRepository();
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure().build();
         try {
@@ -23,27 +42,18 @@ public class AdRepository {
             Session session = sf.openSession();
             session.beginTransaction();
 
-            Query query = session.createQuery("Select distinct a From Ad a where a.created >= :lastDay");
-            query.setParameter("lastDay", LocalDateTime.now().minusHours(24));
-            rsl = query.list();
             System.out.println("The ads within last 24 hours: ");
-            for (Ad ad : rsl) {
+            for (Ad ad : adRepository.getAdsWithin24Hours(session)) {
                 System.out.println(ad);
             }
 
-            Criteria cr = session.createCriteria(Ad.class);
-            cr.add(Restrictions.isNotNull("photo"));
-            rsl = cr.list();
             System.out.println("The ads with photos: ");
-            for (Ad ad : rsl) {
+            for (Ad ad : adRepository.getAdsWithPhotos(session)) {
                 System.out.println(ad);
             }
 
-            Criteria cr1 = session.createCriteria(Ad.class);
-            cr1.add(Restrictions.eq("carBody", "hatchback"));
-            rsl = cr1.list();
             System.out.println("The ads with hatchback: ");
-            for (Ad ad : rsl) {
+            for (Ad ad : adRepository.getAdsWithSpecificCarBody(session, "hatchback")) {
                 System.out.println(ad);
             }
 
