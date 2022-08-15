@@ -10,16 +10,14 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String username;
     private String name;
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Ad> ads;
 
-    public static User of(String username, String name, String password) {
+    public static User of(String name, String password) {
         User user = new User();
-        user.username = username;
         user.name = name;
         user.password = password;
         return user;
@@ -31,14 +29,6 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getName() {
@@ -74,12 +64,12 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return id == user.id && Objects.equals(username, user.username);
+        return id == user.id && Objects.equals(name, user.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username);
+        return Objects.hash(id, name);
     }
 
 }

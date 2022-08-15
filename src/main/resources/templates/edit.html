@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ads List</title>
+  <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.13/dist/semantic.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+
+  <link href="/css/bootstrap.min.css" rel="stylesheet" >
+  <link href="/css/cards.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand me-2" th:href="@{/index}">
+        Ads
+      </a>
+      <div class="d-flex justify-content-end" id="navbarButtonsExample">
+        <div class="d-flex align-items-center">
+          <a class="btn btn-link text-decoration-none px-3 me-2" th:if="${user.name == 'guest'}" th:href="@{/login}">
+            Login
+          </a>
+          <a class="btn btn-primary me-3" th:if="${user.name == 'guest'}" th:href="@{/signup}">
+            Signup
+          </a>
+          <a class="nav-link" th:unless="${user.name == 'guest'}"th:href="@{/logout}">
+            <span th:text="${user.name}"></span>
+            <span>| Log out</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="row">
+    <div class="col-sm-4 mx-auto">
+      <div class="card">
+        <div class="image photo-holder">
+          <img th:src="@{|/photoAd/${ad.id}|}" />
+          <img th:if="${ad.isSold}" th:width="50" th:hight="50" src="/images/sold.jpg" class="plus-image"/>
+        </div>
+
+        <div class="card-inner">
+          <form th:action="@{/edit}" method="post" id="edit" enctype="multipart/form-data">
+            <input type="hidden" name="id" th:value="${ad.id}">
+            <input type="hidden" name="created1" th:value="${ad.created}">
+            <div class="header">
+              <input type="text" maxlength="100" class="form-control form-control-lg" name="model"
+                     th:value="${ad.model}" required>
+              <input type="text" maxlength="100" class="form-control form-control-lg" name="carBody"
+                     th:value="${ad.carBody}" required>
+            </div>
+            <div class="content">
+              <input type="text" maxlength="100" class="form-control form-control-lg" name="description"
+                     th:value="${ad.description}" required>
+            </div>
+
+            <div class="form-check mt-3">
+              <input class="form-check-input" type="checkbox" name="isSold" th:checked="${ad.isSold}" id="isSold">
+              <label class="form-check-label" for="isSold">
+                is Sold?
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label for="file">Фотография</label>
+              <input type="file" class="form-control" name="file" id="file" accept="image/*">
+            </div>
+
+            <div class="row">
+              <div class="btn-group btn-group-lg mx-auto" role="group">
+                <a th:href="@{/index}" class="btn btn-primary" role="button">Back to ads</a>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>

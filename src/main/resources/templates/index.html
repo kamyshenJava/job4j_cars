@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ads List</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.13/dist/semantic.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet" >
+    <link href="/css/cards.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand me-2" th:href="@{/index}">
+                Ads
+            </a>
+            <div class="d-flex justify-content-end" id="navbarButtonsExample">
+                <div class="d-flex align-items-center">
+                    <a class="btn btn-link text-decoration-none px-3 me-2" th:href="@{/login}"
+                       th:if="${user.name == 'guest'}">
+                        Login
+                    </a>
+                    <a class="btn btn-primary me-3" th:href="@{/signup}" th:if="${user.name == 'guest'}">
+                        Signup
+                    </a>
+                    <a class="nav-link" th:unless="${user.name == 'guest'}" th:href="@{/logout}">
+                        <span th:text="${user.name}"></span>
+                        <span>| Log out</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="col-md-2 col-sm-4" th:each="ad : ${ads}">
+            <div class="card">
+                <div class="image photo-holder">
+                    <img th:src="@{|/photoAd/${ad.id}|}" />
+                    <img th:if="${ad.isSold}" th:width="50" th:hight="50" src="/images/sold.jpg" class="plus-image"/>
+                </div>
+                <div class="card-inner">
+                    <div class="header">
+                        <h2 th:text="${ad.model}">Title</h2>
+                        <h3 th:text="${ad.carBody}">Sub-Head</h3>
+                    </div>
+                    <div class="content">
+                        <p th:text="${ad.description}">Content area</p>
+                    </div>
+
+                    <a th:if="${user.id == ad.user.id}" th:href="@{/edit/{id}(id=${ad.id})}" class="btn btn-outline-primary btn-lg w-100"
+                       tabindex="-1" role="button"
+                       aria-disabled="true">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" th:unless="${user.name == 'guest'}">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAd">
+            Add a new ad
+        </button>
+    </div>
+</div>
+<div class="modal fade" id="addAd" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title mx-auto heading-section" id="staticBackdropLabel">New Ad</h3>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/add}" method="POST" id="add" th:object="${ad}" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <input type="text" maxlength="100" class="form-control form-control-lg" name="model"
+                               placeholder="Enter the car's model..." id="model" required>
+                    </div>
+                    <div class="mb-4">
+                        <input type="text" maxlength="100" class="form-control form-control-lg" name="carBody"
+                               placeholder="Enter the car's body type..." id="car_body" required>
+                    </div>
+                    <div class="mb-4">
+                        <input type="text" maxlength="100" class="form-control form-control-lg" name="description"
+                               placeholder="Enter the ad's description..." id="description" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="file">Фотография</label>
+                        <input type="file" class="form-control" name="file" id="file" accept="image/*"
+                               required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="add">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.2.13/dist/semantic.min.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>

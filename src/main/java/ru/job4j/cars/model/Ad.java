@@ -20,7 +20,7 @@ public class Ad {
     @Column(name = "is_sold")
     private boolean isSold;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -115,10 +115,4 @@ public class Ad {
         return Objects.hash(id, description);
     }
 
-    @Override
-    public String toString() {
-        return "Ad{id=" + id + ", description='" + description + '\'' + ", model='" + model + '\''
-                + ", carBody='" + carBody + '\'' + ", created=" + created + ", isSold=" + isSold
-                + ", user=" + user + '}';
-    }
 }
