@@ -1,6 +1,6 @@
 create table if not exists users(
     id serial primary key,
-    name text UNIQUE NOT NULL,
+    name text unique not null,
     password text not null
 );
 
@@ -15,7 +15,7 @@ create table if not exists ads(
 create table if not exists cars(
     id serial primary key,
     photo bytea,
-    ad_id int references ads(id) UNIQUE
+    ad_id int references ads(id) unique
 );
 
 create table if not exists car_brands(
