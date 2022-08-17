@@ -11,10 +11,6 @@ public class Ad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String description;
-    private String model;
-    @Column(name = "car_body")
-    private String carBody;
-    private byte[] photo;
 
     private LocalDateTime created;
     @Column(name = "is_sold")
@@ -24,11 +20,13 @@ public class Ad {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public static Ad of(String description, String model, String carBody, boolean isSold) {
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "car_id")
+    private Car car;
+
+    public static Ad of(String description, boolean isSold) {
         Ad ad = new Ad();
         ad.description = description;
-        ad.model = model;
-        ad.carBody = carBody;
         ad.created = LocalDateTime.now();
         ad.isSold = isSold;
         return ad;
@@ -50,28 +48,12 @@ public class Ad {
         this.description = description;
     }
 
-    public String getModel() {
-        return model;
+    public LocalDateTime getCreated() {
+        return created;
     }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getCarBody() {
-        return carBody;
-    }
-
-    public void setCarBody(String carBody) {
-        this.carBody = carBody;
-    }
-
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
     }
 
     public boolean isSold() {
@@ -90,12 +72,12 @@ public class Ad {
         this.user = user;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
+    public Car getCar() {
+        return car;
     }
 
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
+    public void setCar(Car car) {
+        this.car = car;
     }
 
     @Override

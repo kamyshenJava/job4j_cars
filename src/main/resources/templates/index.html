@@ -44,8 +44,9 @@
                 </div>
                 <div class="card-inner">
                     <div class="header">
-                        <h2 th:text="${ad.model}">Title</h2>
-                        <h3 th:text="${ad.carBody}">Sub-Head</h3>
+                        <h3 th:text="${ad.car.carBrand.brand}">Title</h3>
+                        <h4 th:text="${ad.car.carModel.model}">Sub-Head</h4>
+                        <h4 th:text="${ad.car.carBody.body}">Sub-Head</h4>
                     </div>
                     <div class="content">
                         <p th:text="${ad.description}">Content area</p>
@@ -75,11 +76,15 @@
             <div class="modal-body">
                 <form th:action="@{/add}" method="POST" id="add" th:object="${ad}" enctype="multipart/form-data">
                     <div class="mb-4">
+                        <input type="text" maxlength="100" class="form-control form-control-lg" name="brand"
+                               placeholder="Enter the car's brand..." id="brand" required>
+                    </div>
+                    <div class="mb-4">
                         <input type="text" maxlength="100" class="form-control form-control-lg" name="model"
                                placeholder="Enter the car's model..." id="model" required>
                     </div>
                     <div class="mb-4">
-                        <input type="text" maxlength="100" class="form-control form-control-lg" name="carBody"
+                        <input type="text" maxlength="100" class="form-control form-control-lg" name="body"
                                placeholder="Enter the car's body type..." id="car_body" required>
                     </div>
                     <div class="mb-4">

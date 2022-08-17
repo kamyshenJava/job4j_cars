@@ -9,8 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.job4j.cars.model.Ad;
-import ru.job4j.cars.model.User;
+import ru.job4j.cars.model.*;
 import ru.job4j.cars.service.AdService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,9 +36,13 @@ public class AdController {
     }
 
     @PostMapping("/add")
-    public String add(HttpSession session, @ModelAttribute Ad ad, @RequestParam("file") MultipartFile file)
-            throws IOException {
-        ad.setPhoto(file.getBytes());
+    public String add(HttpSession session, @ModelAttribute Ad ad, HttpServletRequest req,
+                      @RequestParam("file") MultipartFile file) throws IOException {
+        CarBrand carBrand = new CarBrand(req.getParameter("brand"));
+        CarBody carBody = new CarBody(req.getParameter("body"));
+        CarModel carModel = new CarModel(req.getParameter("model"));
+        Car car = new Car(file.getBytes(), carBody, carBrand, carModel);
+        ad.setCar(car);
         ad.setCreated(LocalDateTime.now());
         ad.setUser((User) session.getAttribute("user"));
         adService.add(ad);
@@ -51,13 +54,16 @@ public class AdController {
         Ad ad = adService.getById(id);
         return ResponseEntity.ok()
                 .headers(new HttpHeaders())
-                .contentLength(ad.getPhoto().length)
+                .contentLength(ad.getCar().getPhoto().length)
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(new ByteArrayResource(ad.getPhoto()));
+                .body(new ByteArrayResource(ad.getCar().getPhoto()));
     }
 
     @GetMapping("/edit/{id}")
     public String editForm(Model model, HttpSession session, @PathVariable("id") int id) {
+        if (session.getAttribute("user") == null) {
+            return "redirect:/index";
+        }
         addUserToModel(model, session);
         Ad ad = adService.getById(id);
         model.addAttribute("ad", ad);
@@ -70,11 +76,15 @@ public class AdController {
         User user = (User) session.getAttribute("user");
         LocalDateTime created = LocalDateTime.parse(req.getParameter("created1"));
         boolean isSold = "on".equals(req.getParameter("isSold"));
-        byte[] photo = file.isEmpty() ? adService.getById(ad.getId()).getPhoto() : file.getBytes();
+        byte[] photo = file.isEmpty() ? adService.getById(ad.getId()).getCar().getPhoto() : file.getBytes();
+        CarBrand carBrand = new CarBrand(req.getParameter("brand"));
+        CarBody carBody = new CarBody(req.getParameter("body"));
+        CarModel carModel = new CarModel(req.getParameter("model"));
+        Car car = new Car(photo, carBody, carBrand, carModel);
         ad.setUser(user);
         ad.setCreated(created);
         ad.setSold(isSold);
-        ad.setPhoto(photo);
+        ad.setCar(car);
         adService.update(ad);
         return String.format("redirect:/edit/%d", ad.getId());
     }
