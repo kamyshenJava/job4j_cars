@@ -9,7 +9,10 @@ import ru.job4j.cars.model.User;
 import java.util.Optional;
 
 @Repository
-public class UserStore implements DefaultQuery {
+public class UserStore implements Store {
+
+    private static final String FIND_USER_BY_NAME_AND_PASSWORD
+            = "From User u where u.name = :name and u.password = :password";
 
     private final SessionFactory sf;
 
@@ -32,7 +35,7 @@ public class UserStore implements DefaultQuery {
     public Optional<User> findUserByNameAndPassword(String name, String password) {
         return tx(session -> {
             final Query<User> query
-                    = session.createQuery("From User u where u.name = :name and u.password = :password");
+                    = session.createQuery(FIND_USER_BY_NAME_AND_PASSWORD);
             query.setParameter("name", name);
             query.setParameter("password", password);
             return query.uniqueResultOptional();

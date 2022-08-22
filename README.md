@@ -1,10 +1,10 @@
 This project is a web-site with ads for cars. One needs to log in/sign up to be able to post ads. Once you are logged in, you'll see an "add a new ad" button. Also you can edit the ads you have previously added. To do this there are buttons "edit" on each of your ads. If you are not logged in, you see all the ads (from newest to oldest), but cannot add or edit any ads. 
 
-Requirements: you need to have Java18 installed to run this app.
+Requirements: you need to have Java18 and some IDE (like IDEA) with Maven installed to run this app.
 
 To run the project use class Main/method main.
 
-Used technologies: Spring boot, Thymeleaf, Hibernate.
+Used technologies: Spring boot, Thymeleaf, Hibernate, Bootstrap 5.
 
 ![index_view1](https://user-images.githubusercontent.com/97850827/185155633-186aa71c-a710-49d6-b31a-66831a8e0dae.jpg)
 ![index_add_view1](https://user-images.githubusercontent.com/97850827/185155661-96ad09b1-9c67-47b8-b29e-97f6219ec1f6.jpg)

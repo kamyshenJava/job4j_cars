@@ -6,7 +6,7 @@ import org.hibernate.Transaction;
 
 import java.util.function.Function;
 
-public interface DefaultQuery {
+public interface Store {
     default <T> T tx(final Function<Session, T> command, SessionFactory sf) {
         final Session session = sf.openSession();
         final Transaction tx = session.beginTransaction();

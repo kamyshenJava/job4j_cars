@@ -17,11 +17,9 @@ public class Ad {
     private boolean isSold;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "car_id")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Car car;
 
     public static Ad of(String description, boolean isSold) {
