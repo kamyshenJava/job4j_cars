@@ -16,17 +16,20 @@ public class Ad {
     @Column(name = "is_sold")
     private boolean isSold;
 
+    private byte[] photo;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Car car;
 
-    public static Ad of(String description, boolean isSold) {
+    public static Ad of(byte[] photo, String description, boolean isSold) {
         Ad ad = new Ad();
         ad.description = description;
         ad.created = LocalDateTime.now();
         ad.isSold = isSold;
+        ad.photo = photo;
         return ad;
     }
 
@@ -78,6 +81,14 @@ public class Ad {
         this.car = car;
     }
 
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -94,5 +105,4 @@ public class Ad {
     public int hashCode() {
         return Objects.hash(id, description);
     }
-
 }

@@ -10,13 +10,23 @@ public class CarModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    String model;
+    private String model;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private CarBrand brand;
 
     public CarModel() {
     }
 
-    public CarModel(String model) {
+    public CarModel(String model, CarBrand brand) {
         this.model = model;
+        this.brand = brand;
+    }
+
+    public CarModel(int id, String model, CarBrand brand) {
+        this.id = id;
+        this.model = model;
+        this.brand = brand;
     }
 
     public int getId() {
@@ -35,4 +45,11 @@ public class CarModel {
         this.model = model;
     }
 
+    public CarBrand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(CarBrand brand) {
+        this.brand = brand;
+    }
 }

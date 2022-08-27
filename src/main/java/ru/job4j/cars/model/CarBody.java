@@ -1,38 +1,21 @@
 package ru.job4j.cars.model;
 
-import javax.persistence.*;
+public enum CarBody {
+    STATION_WAGON("SW"), SEDAN("S"), HATCHBACK("H"), VAN("V"), SUV("SU"), JEEP("J"),
+    COUPE("CO"), SPORTS_CAR("SC"), MINIVAN("M"), PICKUP_TRUCK("P"), CONVERTIBLE("C");
 
-@Entity
-@Table(name = "car_bodies")
-public class CarBody {
+    public final String code;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    String body;
-
-    public CarBody() {
+    CarBody(String code) {
+        this.code = code;
     }
 
-    public CarBody(String body) {
-        this.body = body;
+    public String getCode() {
+        return code;
     }
 
-    public int getId() {
-        return id;
+    @Override
+    public String toString() {
+        return super.toString().replaceAll("_", " ");
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
 }

@@ -46,13 +46,18 @@
           <form th:action="@{/edit}" method="post" id="edit" enctype="multipart/form-data">
             <input type="hidden" name="id" th:value="${ad.id}">
             <input type="hidden" name="created1" th:value="${ad.created}">
+            <input type="hidden" name="car_id" th:value="${ad.car.id}">
+            <input type="hidden" name="model_id" th:value="${ad.car.carModel.id}">
+            <input type="hidden" name="brand_id" th:value="${ad.car.carModel.brand.id}">
             <div class="header">
               <input type="text" maxlength="100" class="form-control form-control-lg" name="brand"
-                     th:value="${ad.car.carBrand.brand}" required>
+                     th:value="${ad.car.carModel.brand.brand}" required>
               <input type="text" maxlength="100" class="form-control form-control-lg" name="model"
                      th:value="${ad.car.carModel.model}" required>
-              <input type="text" maxlength="100" class="form-control form-control-lg" name="body"
-                     th:value="${ad.car.carBody.body}" required>
+              <select class="form-select" name="body" required>
+                <option th:each="body : ${bodies}" th:value="${body.code}" th:text="${body}"
+                        th:selected="${body} == ${ad.car.carBody}"></option>
+              </select>
             </div>
             <div class="content">
               <input type="text" maxlength="100" class="form-control form-control-lg" name="description"

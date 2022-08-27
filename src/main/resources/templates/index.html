@@ -44,9 +44,9 @@
                 </div>
                 <div class="card-inner">
                     <div class="header">
-                        <h3 th:text="${ad.car.carBrand.brand}">Title</h3>
+                        <h3 th:text="${ad.car.carModel.brand.brand}">Title</h3>
                         <h4 th:text="${ad.car.carModel.model}">Sub-Head</h4>
-                        <h4 th:text="${ad.car.carBody.body}">Sub-Head</h4>
+                        <h6 th:text="${ad.car.carBody}">Sub-Head</h6>
                     </div>
                     <div class="content">
                         <p th:text="${ad.description}">Content area</p>
@@ -84,13 +84,17 @@
                                placeholder="Enter the car's model..." id="model" required>
                     </div>
                     <div class="mb-4">
-                        <input type="text" maxlength="100" class="form-control form-control-lg" name="body"
-                               placeholder="Enter the car's body type..." id="car_body" required>
-                    </div>
-                    <div class="mb-4">
                         <input type="text" maxlength="100" class="form-control form-control-lg" name="description"
                                placeholder="Enter the ad's description..." id="description" required>
                     </div>
+
+                    <div class="mb-4">
+                        <select class="form-select" name="body" required>
+                            <option selected value="" disabled>Select a type of the car body</option>
+                            <option th:each="body : ${bodies}" th:value="${body.code}" th:text="${body}"></option>
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <label for="file">Фотография</label>
                         <input type="file" class="form-control" name="file" id="file" accept="image/*"
